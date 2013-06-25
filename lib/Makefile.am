@@ -1,0 +1,13 @@
+CC=gcc
+
+INCLUDE_DIR=../inc
+BIN_DIR=../bin
+
+AM_CPPFLAGS=-I$(INCLUDE_DIR)
+
+noinst_HEADERS=$(INCLUDE_DIR)/MDST.h
+
+noinst_LIBRARIES=libMDST.a
+
+libMDST_a_SOURCES=\
+		MDST.c
