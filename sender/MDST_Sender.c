@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 	tInfAddr.sin_port		= MDSTHeader->InfAddr.sin_port;
 */
 	MDST_AttachIPCS(atoi(argv[1]));
+	MDSTHeader->MPListRPIdx = MDSTHeader->MPListMPIdx + 1;
 
 	if ((iInfSock = socket(PF_INET, SOCK_DGRAM, 0)) < 0) MDST_ErrorExit("socket");
 
@@ -56,7 +57,10 @@ int main(int argc, char *argv[])
 			MDST_PrintTime("");
 
 			if (sendto(iInfSock,tmpBfr,tCopySize,0, (struct sockaddr *)&(MDSTHeader->InfAddr), sizeof(MDSTHeader->InfAddr)) < tCopySize) MDST_ErrorExit("send");
-			else printf("%d bytes are sent from %d\n",(int)(tCopySize-sizeof(unsigned int)),(int)(tOffset-(tCopySize-sizeof(unsigned int))));
+			else {
+				MPList[MDSTHeader->MPListRPIdx].StartOffset = MPList[MDSTHeader->MPListMPIdx].StartOffset;
+				printf("%d bytes are sent from %d\n",(int)(tCopySize-sizeof(unsigned int)),(int)(tOffset-(tCopySize-sizeof(unsigned int))));
+			}
 			fflush(stdout);
 
 			for (ii=0;ii<nn; ii++)

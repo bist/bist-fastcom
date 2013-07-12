@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
 	struct MDSTMissingPage *tCurrMP;
 	struct timeval tTimeout = { 1, 0 };
 	char tmpBuf[16];
+	unsigned int tPrvStartOffset = 0;
 
 	MDST_AttachIPCS(atoi(argv[1]));
 
@@ -134,7 +135,8 @@ int main(int argc, char *argv[])
 
 		if (MDSTHeader->EOSRcvrPage.EndOffset)
 			sleep(1);
-		else {
+		else if (tPrvStartOffset == MPList[MDSTHeader->MPListRPIdx].StartOffset)
+		{
 			MDSTHeader->EOSRcvrPage.StartOffset
 					= MPList[MDSTHeader->MPListRPIdx].StartOffset;
 
@@ -159,13 +161,15 @@ int main(int argc, char *argv[])
 					MDSTHeader->EOSRcvrPage.EndOffset
 							= MDSTHeader->EOSRcvrPage.StartOffset + okunan;
 					MDST_PrintTime("");
-					printf("The page between %d and %d is recovered\n",
+					printf("end offset degismis The page between %d and %d is recovered\n",
 							MDSTHeader->EOSRcvrPage.StartOffset,
 							MDSTHeader->EOSRcvrPage.EndOffset);
-					MDST_ReleaseSEMWait();
 					fflush(stdout);
 				}
 			}
+		}
+		else {
+			tPrvStartOffset = MPList[MDSTHeader->MPListRPIdx].StartOffset;
 		}
 
 		if (3 == argc)

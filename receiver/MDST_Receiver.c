@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
 								memcpy(tStreamPtr,MDSTHeader->EOSRcvrBufr,okunan);
 								tStreamPtr += okunan;
 								tMP->StartOffset += okunan;
+								MDST_ReleaseSEMWait();
 						}
 						MDSTHeader->EOSRcvrPage.EndOffset = 0;
 					}
