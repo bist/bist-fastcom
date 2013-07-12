@@ -39,42 +39,81 @@ Example usage:
     $ ./ManageIPCS 2 REMOVE
 
 ### MDST_SetPrm
-   set the values for stream sender and receiver parameters in shared memory
-   parameter1 gives the number for id of shared memory
+Assign values for socket addresses described in the struct below.
 
-   Ex:   MDST_SetPrm 2 INF_ADDR 0.0.0.0 2001
-      MDST_SetPrm 2 RCVR_SRVR_ADDR 0.0.0.0 2002
-      MDST_SetPrm 2 RCVR_CLNT_ADDR 127.0.0.1 2002
+This utility takes 4 arguments:
+
+1. id of shared memory
+2. which socket value to assign (INF_ADDR, RCVR_SRVR_ADDR or RCVR_CLNT_ADDR)
+3. IPV4 address for the socket
+4. port number for the socket
+
+Example usage:
+
+    $ ./MDST_SetPrm 2 INF_ADDR        0.0.0.0    2001
+    $ ./MDST_SetPrm 2 RCVR_SRVR_ADDR  0.0.0.0    2002
+    $ ./MDST_SetPrm 2 RCVR_CLNT_ADDR  127.0.0.1  2002
 
 ### MDST_ManagePacketLog
-   write or read data from stream shared memory
-   parameter1 gives the number for id of shared memory
-   Ex: MDST_ManagePacketLog 2 LOAD data_file
-      MDST_ManagePacketLog 2 SAVE data_save_file
+You can save the data from shared memory to a file OR you can load data to shared memory at once.
 
-MDST SENDER
------------
-* MDST_Sender
-   sends shared memory stream data via broadcast
-   parameter1 gives shared memory id
-   parameter2 gives dummy loop number
-   Ex: MDST_Sender 2 2000
+This utility takes 3 arguments:
 
-* MDST_RecoveryServer
-   sends shared memory stream if broadcast not received
-   parameter1 gives shared memory id
-   Ex: MDST_RecoveryServer 2
+1. id of shared memory
+2. operation (LOAD or SAVE)
+3. filename to save or load
 
-MDST RECEIVER
--------------
-* MDST_Receiver
-   receives stream data via broadcast and write to shared memory
-   parameter1 gives shared memory id
-   Ex: MDST_Receiver 2
+Example usage:
 
-* MDST_RecoveryClient
-   receives stream data if broadcast not received
-   parameter1 gives shared memory id
-   Ex: MDST_RecoveryClient 2
+    $ ./MDST_ManagePacketLog 2 LOAD data_load_file
+    $ ./MDST_ManagePacketLog 2 SAVE data_save_file
 
+### MDST SENDER
 
+#### MDST_Sender
+Sends shared memory data via broadcast.
+
+This utility takes 2 arguments:
+
+1. id of shared memory
+2. loop number for send the other paket
+
+Example usage:
+
+    $ ./MDST_Sender 2 2000
+    $ ./MDST_Sender 2 0
+
+#### MDST_RecoveryServer
+Sends shared memory data if broadcast not received by receiver.
+
+This utility takes 1 arguments:
+
+1. id of shared memory
+
+Example usage:
+
+    $ ./MDST_RecoveryServer 2
+
+### MDST RECEIVER
+
+#### MDST_Receiver
+Receives data via broadcast and write to shared memory.
+
+This utility takes 1 arguments:
+
+1. id of shared memory
+
+Example usage:
+
+    $ ./MDST_Receiver 1
+
+#### MDST_RecoveryClient
+Requests data if broadcast not received and receives data that send from MDST_RecoveryServer.
+
+This utility takes 1 arguments:
+
+1. id of shared memory
+
+Example usage:
+
+    $ ./MDST_RecoveryClient 1
