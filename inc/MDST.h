@@ -55,10 +55,14 @@ struct MDSTStreamHeader
 	char EOSRcvrBufr[MAX_RCVR_PAGE_LEN];
 };
 
-struct MDSTStreamHeader *MDSTHeader;
-struct MDSTMissingPage *MPList;
-unsigned char *MDStream;
-unsigned int MPListSem;
+extern struct MDSTStreamHeader *MDSTHeader;
+extern struct MDSTMissingPage *MPList;
+extern unsigned char *MDStream;
+extern unsigned int MPListSem;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void MDST_PrintTime(char *tLabel);
 void MDST_ErrorExit(char *pMsg);
@@ -67,5 +71,9 @@ int MDST_ReleaseSEMWait();
 int MDST_HangSEMWait();
 int MDST_read(unsigned int soffset, unsigned char *data, unsigned int len);
 void MDST_write(unsigned char *data, unsigned int len);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* MDST_H_ */

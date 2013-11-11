@@ -6,6 +6,11 @@
  */
 #include <MDST.h>
 
+struct MDSTStreamHeader *MDSTHeader;
+struct MDSTMissingPage *MPList;
+unsigned char *MDStream;
+unsigned int MPListSem;
+
 void MDST_PrintTime(char *tLabel)
 {
 	int hrs, mins, secs;
